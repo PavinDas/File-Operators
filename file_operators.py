@@ -3,27 +3,26 @@ import os
 
 #! rename files
 def bulk_rename_files(directory, prefix, extension=None):
-    # List all files in the given directory
     try:
+        # ? List all files
         files = os.listdir(directory)
-        # Filter files based on extension (if provided)
+        # ? Filter files by extension
         if extension:
             files = [f for f in files if f.endswith(extension)]
-        files.sort()  # Sort to rename files in order
+        files.sort()
 
-        # Loop over the files and rename them
         for index, filename in enumerate(files):
-            # Extract the file extension
+            # ? Separate file extension
             file_extension = os.path.splitext(filename)[1]
 
-            # Build the new file name
+            # ? create new file name
             new_name = f"{prefix}_{index + 1}{file_extension}"
 
-            # Form the full path for the old and new names
+            # ? create full path
             old_file_path = os.path.join(directory, filename)
             new_file_path = os.path.join(directory, new_name)
 
-            # Rename the file
+            # ? Rename the file
             os.rename(old_file_path, new_file_path)
             print(f"Renamed '{filename}' to '{new_name}'")
 
@@ -34,34 +33,30 @@ def bulk_rename_files(directory, prefix, extension=None):
 
 # * File renamer calling
 def bulk_rename_calling():
-    # Replace with the directory path where your files are located
     directory = input("Enter path: ")
 
-    # Define a new prefix for the renamed files
     prefix = input("Enter new name: ")
 
-    # Optionally, define a specific extension (e.g., ".txt") or set to None to rename all files
     x = input("have you any extension? [Yes:y/ No:n]")
     if x == "y" or x == "yes" or x == "Y" or x == "Yes" or x == "YES":
         extension = input("Enter extension (exclude '.'): ")
     else:
         extension = None
 
-        # Call the function to rename files in bulk
     bulk_rename_files(directory, prefix, extension)
 
 
 #! Remove Empty Folders
 def remove_empty_folders(directory):
-    # Walk the directory tree in reverse to check for empty folders
+    #? Walk to direcories and subdirecories
     for dirpath, dirnames, filenames in os.walk(directory, topdown=False):
         for dirname in dirnames:
-            # Create the full path to the directory
+            #? Create the full path to the directory
             dir_to_check = os.path.join(dirpath, dirname)
             try:
-                # Check if the directory is empty
-                if not os.listdir(dir_to_check):  # Directory is empty
-                    os.rmdir(dir_to_check)  # Remove the empty directory
+                #? Check the directory is empty or not
+                if not os.listdir(dir_to_check):
+                    os.rmdir(dir_to_check) 
                     print(f"Removed empty folder: {dir_to_check}")
             except OSError as e:
                 print(f"Error removing {dir_to_check}: {e}")
